@@ -21,11 +21,12 @@ export const getUsuario = async (req: Request, res: Response) => {
 
     if (usuario) {
 
-        res.json({usuario});
+        res.json({ ok: true, usuario});
 
     } else {
         
         res.status(404).json({
+            ok: false,
             msg: `No existe un usuario con el id ${id}`
         });
 
@@ -49,6 +50,7 @@ export const postUsuario = async (req: Request, res: Response) => {
         if (existeEmail) {
             
             return res.status(400).json({
+                ok: false,
                 msg: `Ya existe un usuario con el email ${body.email}`
             });
 
@@ -57,13 +59,14 @@ export const postUsuario = async (req: Request, res: Response) => {
         const usuario = new Usuario(body);
         await usuario.save();
 
-        res.json({usuario});
+        res.json({ ok: true, usuario});
         
     } catch (error) {
         
         console.log(error);
 
         res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador',
         });
 
@@ -82,19 +85,21 @@ export const putUsuario = async (req: Request, res: Response) => {
 
         if (!usuario) {
             return res.status(400).json({
+                ok: false,
                 msg: `No existe un usuario con el id ${id}`
             });
         }
 
         await usuario.update(body);
 
-        res.json(usuario);
+        res.json({ok: true, usuario});
         
     } catch (error) {
         
         console.log(error);
 
         res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador',
         });
 
@@ -112,6 +117,7 @@ export const deleteUsuario = async (req: Request, res: Response) => {
 
         if (!usuario) {
             return res.status(400).json({
+                ok: false,
                 msg: `No existe un usuario con el id ${id}`
             });
         }
@@ -120,13 +126,14 @@ export const deleteUsuario = async (req: Request, res: Response) => {
 
         // await usuario.destroy();
 
-        res.json({usuario});
+        res.json({ok: true, usuario});
         
     } catch (error) {
         
         console.log(error);
 
         res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador',
         });
 
