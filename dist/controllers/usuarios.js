@@ -27,10 +27,11 @@ const getUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const { id } = req.params;
     const usuario = yield usuario_1.default.findByPk(id);
     if (usuario) {
-        res.json({ usuario });
+        res.json({ ok: true, usuario });
     }
     else {
         res.status(404).json({
+            ok: false,
             msg: `No existe un usuario con el id ${id}`
         });
     }
@@ -46,16 +47,18 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
         if (existeEmail) {
             return res.status(400).json({
+                ok: false,
                 msg: `Ya existe un usuario con el email ${body.email}`
             });
         }
         const usuario = new usuario_1.default(body);
         yield usuario.save();
-        res.json({ usuario });
+        res.json({ ok: true, usuario });
     }
     catch (error) {
         console.log(error);
         res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador',
         });
     }
@@ -68,15 +71,17 @@ const putUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const usuario = yield usuario_1.default.findByPk(id);
         if (!usuario) {
             return res.status(400).json({
+                ok: false,
                 msg: `No existe un usuario con el id ${id}`
             });
         }
         yield usuario.update(body);
-        res.json(usuario);
+        res.json({ ok: true, usuario });
     }
     catch (error) {
         console.log(error);
         res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador',
         });
     }
@@ -88,16 +93,18 @@ const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const usuario = yield usuario_1.default.findByPk(id);
         if (!usuario) {
             return res.status(400).json({
+                ok: false,
                 msg: `No existe un usuario con el id ${id}`
             });
         }
         yield usuario.update({ estado: false });
         // await usuario.destroy();
-        res.json({ usuario });
+        res.json({ ok: true, usuario });
     }
     catch (error) {
         console.log(error);
         res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador',
         });
     }
